@@ -1,0 +1,269 @@
+/*----------------------------------------------------------*/
+/*                        TEST AREA                         */
+/*----------------------------------------------------------*/
+
+
+
+/*----------------------------------------------------------*/
+/*                        VARIABLES                         */
+/*----------------------------------------------------------*/
+
+html:not(.style-scope) {
+  /* Transparent title bar for better immersion */
+  --titlebar-background-color: transparent;
+
+  /* Transparent navigation bar and mini-guide:
+  - for better "Ambient" extension on player page
+  - to avoid having a solid navigation bar when scrolling with a transparent title bar */
+  --ytmusic-nav-bar: transparent;
+
+  /* Hide vertical scrollbars */
+  --ytmusic-scrollbar-width: 0px;
+
+  /* Album cover with rounded corners in the player page */
+  --yt-img-border-radius: 8px;
+
+  /* Thinner player bar (default 72px) */
+  --ytmusic-player-bar-height: 60px;
+
+  /* Bigger time info (to make it the same font size as title/artist) */
+  --ytmusic-caption-1-font-size: var(--ytmusic-responsive-font-size) !important;
+}
+
+
+/*----------------------------------------------------------*/
+/*                       APPLICATION                        */
+/*----------------------------------------------------------*/
+
+/* Gray out the application's menu and reveal completely when hovering */
+ytmusic-app:not(:has(ytmusic-player[player-ui-state=FULLSCREEN]))~nav[data-ytmd-main-panel] li[data-selected="false"] {
+  opacity: 0.4;
+}
+ytmusic-app:not(:has(ytmusic-player[player-ui-state=FULLSCREEN]))~nav[data-ytmd-main-panel]:hover li {
+  opacity: 1;
+}
+
+/* Opaque menu bar when hovering for better readability */
+ytmusic-app:not(:has(ytmusic-player[player-ui-state=FULLSCREEN]))~nav[data-ytmd-main-panel]:hover {
+  background-color: black;
+}
+
+/* Gray out the background of the application's menu panels */
+ytmusic-app:not(:has(ytmusic-player[player-ui-state=FULLSCREEN]))~div>ul[data-ytmd-sub-panel="true"] {
+  background: #212121;
+}
+
+
+/*----------------------------------------------------------*/
+/*                        MAIN PAGE                         */
+/*----------------------------------------------------------*/
+
+/* Thinner navigation bar */
+ytmusic-app-layout>[slot=nav-bar],
+ytmusic-app-layout>[slot=player-page],
+#nav-bar-background.ytmusic-app-layout {
+  --ytmusic-nav-bar-height: 48px;
+}
+
+/* Borderless search box */
+.search-box.ytmusic-search-box {
+  --ytmusic-search-border: transparent;
+}
+
+/* Bring things a little upwards, to have the background image start from the transparent title bar */
+#layout {
+  margin-top: 0 !important;
+}
+
+/* Hide dividers */
+#mini-guide-background.ytmusic-app-layout,
+#guide-wrapper.ytmusic-app,
+#nav-bar-background.ytmusic-app-layout,
+#nav-bar-divider.ytmusic-app-layout {
+  border: unset !important;
+}
+
+/* Is a logo really necessary? */
+ytmusic-logo {
+  display: none !important;
+}
+
+/* Search bar centered relative to the whole app width, in all situations */
+.center-content.ytmusic-nav-bar {
+  position: absolute !important;
+  margin-left: unset !important;
+}
+ytmusic-search-box.ytmusic-nav-bar {
+  position: absolute !important;
+  left: 50%;
+  transform: translate(-50%);
+  margin-left: auto;
+  margin-right: 0;
+}
+.right-content.ytmusic-nav-bar {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* Less transparent search box when the home page is scrolled down */
+ytmusic-app-layout.content-scrolled ytmusic-search-box[is-bauhaus-sidenav-enabled]:not([opened]):not([has-query]) {
+  background: rgba(0, 0, 0, .85);
+  border-radius: 8px !important;
+}
+
+/* Same padding between the avatar and the right border
+   and between the mini guide icon and the left border */
+ytmusic-nav-bar[is-bauhaus-sidenav-enabled] .right-content.ytmusic-nav-bar {
+  padding-right: 24px !important;
+  /* = padding of .left-content (16) + padding of #guide-button (8) */
+}
+
+/* Smaller and vertically centered app navigation icons */
+.navigation-icon {
+  display: inherit !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* Hide text under mini guide icons when collapsed */
+#guide:not(opened)~#mini-guide .title-column .ytmusic-guide-entry-renderer {
+  display: none;
+}
+
+
+/*----------------------------------------------------------*/
+/*                       PLAYER PAGE                        */
+/*----------------------------------------------------------*/
+
+/* Stealthier search box when player page is open */
+ytmusic-app-layout[player-page-open] ytmusic-search-box:not([opened]) .search-box.ytmusic-search-box {
+  --ytmusic-search-background: rgba(255, 255, 255, .05);
+  background: var(--ytmusic-search-background) !important;
+}
+
+/* Move the "Title/Video" switch button a little higher */
+ytmusic-player-page:not([is-mweb-modernization-enabled]) .content.ytmusic-player-page {
+  --ytmusic-player-page-vertical-padding: 12px;
+}
+
+/* Video with rounded corners */
+ytmusic-player .html5-video-player {
+  border-radius: 8px !important;
+}
+
+/* Avoid black corners on album cover and video in the player page */
+/* ...when not hovering: */
+ytmusic-player {
+  /* transparency here is to avoid black square corners */
+  background: transparent !important;
+}
+/* ...when hovering: */
+.song-media-controls.ytmusic-player {
+  border-radius: 8px !important;
+}
+
+/* Slightly darken the side panel */
+.side-panel.ytmusic-player-page {
+  opacity: 0.8;
+}
+
+/* Align Next Up/Lyrics/Similar buttons with Audio/Video buttons */
+tp-yt-paper-tabs.tab-header-container.ytmusic-player-page {
+  align-items: flex-start;
+  border: 0;
+  height: unset;
+}
+#tabsContainer.tp-yt-paper-tabs {
+  height: 32px !important;
+}
+
+/* Horizontally recenter the video area that was messed up by some other changes */
+ytmusic-player {
+  max-width: unset !important;
+}
+
+
+/*----------------------------------------------------------*/
+/*                       FULLSCREEN                         */
+/*----------------------------------------------------------*/
+
+/* Hide ambient mode when in fullscreen (can be seen in rounded corners) */
+ytmusic-player[player-ui-state="FULLSCREEN"]>#song-video canvas {
+  display: none;
+}
+
+/* Move fullscreen video up to align with the physical display */
+ytmusic-player[player-ui-state="FULLSCREEN"] {
+  /* top: calc(var(--menu-bar-height, 32px)* -1) !important; */
+  /* TODO: Replace by some calculation instead of a hard-coded value */
+  /* top: -90px !important; */
+  /* top: -58px !important; */
+  top: -80px !important;
+}
+
+/* Hide the side panel which becomes visible in fullscreen after other customizations */
+ytmusic-player-page[player-ui-state="FULLSCREEN"] #side-panel {
+  visibility: hidden;
+}
+
+/* Center the album cover */
+ytmusic-player[player-ui-state="FULLSCREEN"] #thumbnail {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100%;
+}
+
+/* Enlarge the album cover's blurry background to the whole display width */
+ytmusic-app-layout>[slot=player-page][player-ui-state="FULLSCREEN"] {
+  width: 100% !important;
+}
+
+/* Thinner player bar */
+ytmusic-player-bar[player-fullscreened] {
+  --ytmusic-player-bar-height: 56px !important;
+}
+
+/* Play/pause button the same size of previous/next buttons */
+ytmusic-player-bar[player-fullscreened] .left-controls.ytmusic-player-bar .play-pause-button.ytmusic-player-bar {
+  width: 48px !important;
+  height: 48px !important;
+}
+
+/* Smaller right icons (to make them appear the same size of left icons) */
+ytmusic-player-bar[player-fullscreened] .right-controls.ytmusic-player-bar .volume,
+ytmusic-player-bar[player-fullscreened] .right-controls.ytmusic-player-bar .playback-rate,
+ytmusic-player-bar[player-fullscreened] .right-controls.ytmusic-player-bar .repeat,
+ytmusic-player-bar[player-fullscreened] .right-controls.ytmusic-player-bar .shuffle,
+ytmusic-player-bar[player-fullscreened] .right-controls.ytmusic-player-bar .expand-button,
+ytmusic-player-bar[player-fullscreened] .right-controls.ytmusic-player-bar .player-captions-button {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/* Hide thumbnail */
+ytmusic-player-bar[player-fullscreened] .thumbnail-image-wrapper {
+  display: none !important;
+}
+
+/* Bold time info (same weight as the song title) */
+ytmusic-player-bar[player-fullscreened] .left-controls.ytmusic-player-bar .time-info {
+  font-weight: 500 !important;
+}
+
+/* Shadow behind the player bar to make it kind of visible over light background */
+ytmusic-player-bar[player-fullscreened] {
+  background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .5) 100%) !important;
+}
+
+
+/*----------------------------------------------------------*/
+/*                       SEARCH PAGE                        */
+/*----------------------------------------------------------*/
+
+/* Because the app title bar and youtube navbar above are transparent,
+let search results tabs move together with content or it looks weird */
+ytmusic-tabs.ytmusic-tabbed-search-results-renderer {
+  position: unset !important;
+}
