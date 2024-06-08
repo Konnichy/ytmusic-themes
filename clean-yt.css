@@ -192,13 +192,19 @@ ytmusic-player[player-ui-state="FULLSCREEN"]>#song-video canvas {
   display: none;
 }
 
-/* Move fullscreen video up to align with the physical display */
-ytmusic-player[player-ui-state="FULLSCREEN"] {
-  /* top: calc(var(--menu-bar-height, 32px)* -1) !important; */
-  /* TODO: Replace by some calculation instead of a hard-coded value */
-  /* top: -90px !important; */
-  /* top: -58px !important; */
-  top: -80px !important;
+/* Adjust the album cover's blurry background to the whole display surface */
+ytmusic-player[player-ui-state="FULLSCREEN"]:not([video-mode]) {
+  /* Fix the top position */
+  --offset: calc(var(--ytmusic-nav-bar-height, 48px) + var(--menu-bar-height, 32px));
+  top: calc(var(--offset) * -1) !important;
+
+  /* Enlarge to the display width */
+  width: 100vw !important;
+}
+
+/* Square corners for the blurry background because the album cover already has round corners */
+ytmusic-player[player-ui-state="FULLSCREEN"]:not([video-mode]) #song-media-window {
+  border-radius: 0 !important;
 }
 
 /* Hide the side panel which becomes visible in fullscreen after other customizations */
@@ -215,23 +221,18 @@ ytmusic-player[player-ui-state="FULLSCREEN"] #thumbnail {
   height: 100%;
 }
 
-/* Enlarge the album cover's blurry background to the whole display width */
-ytmusic-app-layout>[slot=player-page][player-ui-state="FULLSCREEN"] {
-  width: 100% !important;
-}
-
 /* Thinner player bar */
 ytmusic-player-bar[player-fullscreened] {
   --ytmusic-player-bar-height: 56px !important;
 }
 
-/* Play/pause button the same size of previous/next buttons */
+/* Play/pause button the same size as previous/next buttons */
 ytmusic-player-bar[player-fullscreened] .left-controls.ytmusic-player-bar .play-pause-button.ytmusic-player-bar {
   width: 48px !important;
   height: 48px !important;
 }
 
-/* Smaller right icons (to make them appear the same size of left icons) */
+/* Smaller right icons (to make them appear the same size as left icons) */
 ytmusic-player-bar[player-fullscreened] .right-controls.ytmusic-player-bar .volume,
 ytmusic-player-bar[player-fullscreened] .right-controls.ytmusic-player-bar .playback-rate,
 ytmusic-player-bar[player-fullscreened] .right-controls.ytmusic-player-bar .repeat,
